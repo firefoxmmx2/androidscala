@@ -339,6 +339,24 @@ trait TraitSmsManager[V <: SmsManager] {
   val MESSAGE_READ_TYPE_UNREAD = 0
   val MESSAGE_READ_TYPE_READED = 1
 
+  val SMS_THREAD_ID = "thread_id"
+  val SMS_ADDRESS = "address"
+  val SMS_PERSON = "person"
+  val SMS_DATE = "date"
+  val SMS_PROTOCOL = "protocol"
+  val SMS_READ = "read"
+  val SMS_STATUS = "status"
+  val SMS_TYPE = "type"
+  val SMS_REPLY_PATH_PRESENT = "reply_path_present"
+  val SMS_SUBJECT = "subject"
+  val SMS_BODY = "body"
+  val SMS_SERVICE_CENTER = "service_center"
+  val SMS_LOCKED = "locked"
+    
+  val SMS_STATUS_NONE = -1
+  val SMS_STATUS_COMPLETE = 0
+  val SMS_STATUS_PENDING = 64
+  val SMS_STATUS_FAILD = 128
   def basis: V
 
   def getDefault() = SmsManager.getDefault()
