@@ -7,6 +7,7 @@ import android.content._
 import scala.reflect._
 import android.os._
 import android.widget._
+import android.telephony.SmsManager
 
 class RichActivity(activity: Activity) {
   def get[T <: View](id: Int): T = {
@@ -316,4 +317,35 @@ class AlertDialogBuilder(_title: CharSequence = null, _message: CharSequence = n
    * Because this method runs runOnUiThread internally, you can call this method from any thread.
    */
   override def show(): AlertDialog = runOnUiThread(super.show())
+}
+
+trait TraitSmsManager[V <: SmsManager] {
+  val SMS_URI = "content://sms"
+  val SMS_URI_INBOX = "content://sms/inbox"
+  val SMS_URI_SENT = "content://sms/sent"
+  val SMS_URI_DRAFT = "content://sms/draft"
+  val SMS_URI_OUTBOX = "content://sms/outbox"
+  val SMS_URI_FAILED = "content://sms/failed"
+  val SMS_URI_QUEUED = "content://sms/queued"
+
+  val MESSAGE_TYPE_ALL = 0
+  val MESSAGE_TYPE_INBOX = 1
+  val MESSAGE_TYPE_SENT = 2
+  val MESSAGE_TYPE_DRAFT = 3
+  val MESSAGE_TYPE_OUTBOX = 4
+  val MESSAGE_TYPE_FAILED = 5 // for failed outgoing messages  
+  val MESSAGE_TYPE_QUEUED = 6 // for messages to send later  
+
+  val MESSAGE_READ_TYPE_UNREAD = 0
+  val MESSAGE_READ_TYPE_READED = 1
+
+  def basis: V
+
+  def getDefault() = SmsManager.getDefault()
+
+}
+
+object SSmsManager extends TraitSmsManager[SmsManager] {
+  def basis = getDefault
+
 }
