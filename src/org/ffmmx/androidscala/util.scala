@@ -48,15 +48,4 @@ object Utils {
     }
   }
 
-  def toast(content: String, flag: Int)(implicit context: Context) {
-    Toast.makeText(context, content, flag).show()
-  }
-
-  def toastShort(content: String)(implicit context: Context) {
-    toast(content, Toast.LENGTH_SHORT)
-  }
-
-  def toastLong(content: String)(implicit context: Context) {
-    toast(content, Toast.LENGTH_LONG)
-  }
 }
