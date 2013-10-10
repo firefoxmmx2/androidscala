@@ -59,7 +59,7 @@ trait TraitActivity[V <: Activity] {
   def find[V <: View](id: Int): V = basis.findViewById(id).asInstanceOf[V]
 }
 trait SActivity extends Activity
-  with RContext
+  with SContext
   with TraitActivity[SActivity]
   with Creatable
   with Destroyable
@@ -145,82 +145,40 @@ trait TraitContext[T <: Context] {
 
   implicit val ctx = basis
 
-  @inline def applicationContext = basis.getApplicationContext
+  @inline def bindService[T: ClassTag](p1: android.content.ServiceConnection, p2: Int)(implicit context: Context): Boolean = basis.bindService(SIntent[T], p1, p2)
 
-  @inline def applicationInfo = basis.getApplicationInfo
+  @inline def removeStickyBroadcast[T: ClassTag](implicit context: Context): Unit = basis.removeStickyBroadcast(SIntent[T])
 
-  @inline def assets = basis.getAssets
+  @inline def sendBroadcast[T: ClassTag](implicit context: Context): Unit = basis.sendBroadcast(SIntent[T])
 
-  @inline def cacheDir = basis.getCacheDir
+  @inline def sendBroadcast[T: ClassTag](p: java.lang.String)(implicit context: Context): Unit = basis.sendBroadcast(SIntent[T], p)
 
-  @inline def classLoader = basis.getClassLoader
+  @inline def sendOrderedBroadcast[T: ClassTag](p: java.lang.String)(implicit context: Context): Unit = basis.sendOrderedBroadcast(SIntent[T], p)
 
-  @inline def contentResolver = basis.getContentResolver
+  @inline def sendOrderedBroadcast[T: ClassTag](p1: java.lang.String, p2: android.content.BroadcastReceiver, p3: android.os.Handler, p4: Int, p5: java.lang.String, p6: android.os.Bundle)(implicit context: Context): Unit = basis.sendOrderedBroadcast(SIntent[T], p1, p2, p3, p4, p5, p6)
 
-  @inline def externalCacheDir = basis.getExternalCacheDir
+  @inline def sendStickyBroadcast[T: ClassTag](implicit context: Context): Unit = basis.sendStickyBroadcast(SIntent[T])
 
-  @inline def filesDir = basis.getFilesDir
+  @inline def sendStickyOrderedBroadcast[T: ClassTag](p1: android.content.BroadcastReceiver, p2: android.os.Handler, p3: Int, p4: java.lang.String, p5: android.os.Bundle)(implicit context: Context): Unit = basis.sendStickyOrderedBroadcast(SIntent[T], p1, p2, p3, p4, p5)
 
-  @inline def mainLooper = basis.getMainLooper
+  @inline def startActivity[T: ClassTag](implicit context: Context): Unit = basis.startActivity(SIntent[T])
 
-  @inline def packageCodePath = basis.getPackageCodePath
+  @inline def startService[T: ClassTag](implicit context: Context): android.content.ComponentName = basis.startService(SIntent[T])
 
-  @inline def packageManager = basis.getPackageManager
-
-  @inline def packageName = basis.getPackageName
-
-  @inline def packageResourcePath = basis.getPackageResourcePath
-
-  @inline def resources = basis.getResources
-
-  @inline def theme = basis.getTheme
-  @inline def theme(p: Int) = theme_=(p)
-  @inline def theme_=(p: Int) = { basis.setTheme(p); basis }
-
-  @inline def wallpaper = basis.getWallpaper
-  @inline def wallpaper(p: android.graphics.Bitmap) = wallpaper_=(p)
-  @inline def wallpaper_=(p: android.graphics.Bitmap) = { basis.setWallpaper(p); basis }
-  @inline def wallpaper(p: java.io.InputStream) = wallpaper_=(p)
-  @inline def wallpaper_=(p: java.io.InputStream) = { basis.setWallpaper(p); basis }
-
-  @inline def wallpaperDesiredMinimumHeight = basis.getWallpaperDesiredMinimumHeight
-
-  @inline def wallpaperDesiredMinimumWidth = basis.getWallpaperDesiredMinimumWidth
-
-  @inline def bindService[T: ClassTag](p1: android.content.ServiceConnection, p2: Int)(implicit context: Context): Boolean = basis.bindService(RIntent[T], p1, p2)
-
-  @inline def removeStickyBroadcast[T: ClassTag](implicit context: Context): Unit = basis.removeStickyBroadcast(RIntent[T])
-
-  @inline def sendBroadcast[T: ClassTag](implicit context: Context): Unit = basis.sendBroadcast(RIntent[T])
-
-  @inline def sendBroadcast[T: ClassTag](p: java.lang.String)(implicit context: Context): Unit = basis.sendBroadcast(RIntent[T], p)
-
-  @inline def sendOrderedBroadcast[T: ClassTag](p: java.lang.String)(implicit context: Context): Unit = basis.sendOrderedBroadcast(RIntent[T], p)
-
-  @inline def sendOrderedBroadcast[T: ClassTag](p1: java.lang.String, p2: android.content.BroadcastReceiver, p3: android.os.Handler, p4: Int, p5: java.lang.String, p6: android.os.Bundle)(implicit context: Context): Unit = basis.sendOrderedBroadcast(RIntent[T], p1, p2, p3, p4, p5, p6)
-
-  @inline def sendStickyBroadcast[T: ClassTag](implicit context: Context): Unit = basis.sendStickyBroadcast(RIntent[T])
-
-  @inline def sendStickyOrderedBroadcast[T: ClassTag](p1: android.content.BroadcastReceiver, p2: android.os.Handler, p3: Int, p4: java.lang.String, p5: android.os.Bundle)(implicit context: Context): Unit = basis.sendStickyOrderedBroadcast(RIntent[T], p1, p2, p3, p4, p5)
-
-  @inline def startActivity[T: ClassTag](implicit context: Context): Unit = basis.startActivity(RIntent[T])
-
-  @inline def startService[T: ClassTag](implicit context: Context): android.content.ComponentName = basis.startService(RIntent[T])
-
-  @inline def stopService[T: ClassTag](implicit context: Context): Boolean = basis.stopService(RIntent[T])
+  @inline def stopService[T: ClassTag](implicit context: Context): Boolean = basis.stopService(SIntent[T])
 }
 
-object RIntent {
+object SIntent {
   @inline def apply[T](implicit context: Context, mt: ClassTag[T]) = new Intent(context, mt.runtimeClass)
 
-  @inline def apply[T](action: String)(implicit context: Context, mt: ClassTag[T]): Intent = RIntent[T].setAction(action)
+  @inline def apply[T](action: String)(implicit context: Context, mt: ClassTag[T]): Intent = SIntent[T].setAction(action)
 }
 
-trait RContext extends Context with TraitContext[RContext] {
+trait SContext extends Context with TraitContext[SContext] {
   def basis = this
 }
 
-trait RService extends Service with RContext
+trait SService extends Service with SContext
   with Creatable
   with Destroyable
   with Registerable {
